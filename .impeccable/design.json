@@ -1,0 +1,16 @@
+{
+  "name": "Neurociência • Tecnoarte",
+  "version": 1,
+  "source": "DESIGN.md",
+  "colors": {
+    "ink": "#070b19",
+    "deep": "#0c1123",
+    "panel": "#111a30",
+    "line": "#263249",
+    "mist": "#aabdd2",
+    "ice": "#e8f5fa",
+    "cyan": "#54d9ed",
+    "violet": "#ab8dff"
+  },
+  "font": "Cantarell Variable"
+}
