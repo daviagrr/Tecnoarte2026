@@ -14,7 +14,7 @@ function Home() {
   useEffect(() => {
     if (!hero.current || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
     const context = gsap.context(() => {
-      gsap.fromTo('.hero-reveal', { autoAlpha: 0, y: 28, filter: 'blur(9px)' }, { autoAlpha: 1, y: 0, filter: 'blur(0px)', duration: .9, stagger: .13, ease: 'power3.out' })
+      gsap.fromTo('.hero-reveal', { autoAlpha: .9, y: 16 }, { autoAlpha: 1, y: 0, duration: .75, stagger: .1, ease: 'power3.out' })
     }, hero)
     return () => context.revert()
   }, [])

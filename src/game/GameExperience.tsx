@@ -21,6 +21,7 @@ export function GameExperience() {
   const reset = useCallback(() => {
     setStage('intro'); setIndex(0); setDraft([]); setAttempts(0); setRecords([])
     setFeedback(null); setHintAvailable(false); setHintShown(false)
+    window.scrollTo(0, 0)
     try { sessionStorage.removeItem('sinapse-result') } catch { /* dados legados opcionais */ }
   }, [])
 
@@ -42,7 +43,7 @@ export function GameExperience() {
   useEffect(() => {
     if (!root.current || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
     const context = gsap.context(() => {
-      gsap.fromTo('[data-enter]', { autoAlpha: 0, y: 18 }, { autoAlpha: 1, y: 0, duration: .56, stagger: .07, ease: 'power3.out' })
+      gsap.fromTo('[data-enter]', { autoAlpha: .8, y: 16 }, { autoAlpha: 1, y: 0, duration: .56, stagger: .07, ease: 'power3.out' })
       if (stage === 'playing') gsap.fromTo('.circuit-pulse', { opacity: .2, scale: .96 }, { opacity: 1, scale: 1, duration: .65, ease: 'power2.out' })
       if (stage === 'interlude' && index === 4) gsap.fromTo('.phase-shift', { boxShadow: '0 0 0 rgba(171,141,255,0)' }, { boxShadow: '0 18px 58px rgba(171,141,255,.22)', duration: .7 })
     }, root)
@@ -79,12 +80,14 @@ export function GameExperience() {
   const next = () => {
     if (!feedback?.finished) return
     const nextIndex = index + 1
-    if (nextIndex >= runChallenges.length) { setStage('result'); return }
+    if (nextIndex >= runChallenges.length) { setStage('result'); window.scrollTo(0, 0); return }
     setIndex(nextIndex); setDraft([]); setAttempts(0); setFeedback(null)
     setHintAvailable(false); setHintShown(false)
     if (nextIndex === 2 || nextIndex === 4) setStage('interlude')
+    window.scrollTo(0, 0)
   }
   const begin = () => { reset(); setRunChallenges(createChallenges()); setStage('playing') }
+  const continueAfterInterlude = () => { setStage('playing'); window.scrollTo(0, 0) }
 
   useEffect(() => {
     if (stage !== 'playing' || feedback?.finished) return
@@ -103,7 +106,7 @@ export function GameExperience() {
     {stage === 'intro' && <IntroScreen onStart={() => setStage('instructions')}/>}
     {stage === 'instructions' && <InstructionScreen onBegin={begin}/>}
     {stage === 'playing' && <PlayScreen challenge={runChallenges[index]} index={index} draft={draft} attempts={attempts} feedback={feedback} hintAvailable={hintAvailable} hintShown={hintShown} onAdd={addSymbol} onRemove={removeLast} onClear={() => setDraft([])} onSubmit={submit} onHint={() => setHintShown(true)} onNext={next}/>}
-    {stage === 'interlude' && <InterludeScreen door={runChallenges[index].door} records={records} onContinue={() => setStage('playing')}/>}
+    {stage === 'interlude' && <InterludeScreen door={runChallenges[index].door} records={records} onContinue={continueAfterInterlude}/>}
     {stage === 'result' && <ResultScreen result={{ records }} onReset={reset}/>}
   </div>
 }

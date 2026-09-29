@@ -43,7 +43,36 @@ Nada da nova partida é salvo no navegador. O botão final limpa o resultado par
 
 ## Hospedagem
 
-A hospedagem do grupo ainda não foi informada. A configuração usa **prerenderização estática** do TanStack Start para as oito rotas. Após `npm run build`, `dist/client` pode ser hospedado em um serviço estático que sirva caminhos como `/jogo/codigo/index.html`. Confirme o suporte a caminhos e fallback do provedor antes de publicar. O site não foi publicado.
+A configuração usa **prerenderização estática** do TanStack Start para as oito rotas. O Dockerfile faz o build com Node e serve `dist/client` com Nginx na porta 3000; não é necessário um processo Node em produção. O Nginx serve diretamente caminhos como `/jogo/codigo` e retorna 404 para rotas desconhecidas.
+
+Na VPS com Docker instalado:
+
+```bash
+docker build -t tecnoarte-neurociencia .
+docker run -d --name tecnoarte-site --restart unless-stopped -p 3000:3000 tecnoarte-neurociencia
+```
+
+Abra `http://IP-DA-VPS:3000`. Para conferir o estado, use `docker ps` e `docker logs tecnoarte-site`. Neste computador, o mesmo Dockerfile foi construído e executado com Podman porque a sessão atual não tem permissão de acesso ao daemon Docker:
+
+```bash
+podman build --format docker -t tecnoarte-neurociencia:local .
+podman run -d --name tecnoarte-site -p 3000:3000 localhost/tecnoarte-neurociencia:local
+```
+
+O contêiner local está disponível em `http://localhost:3000`. Nenhum deploy na VPS foi feito por este projeto.
+
+### Coolify na VPS
+
+O deploy do commit `c3eadbf` tentou usar **Railpack**. Esse commit ainda não contém `Dockerfile`, `.dockerignore` e `nginx.conf`; eles precisam fazer parte de um novo commit enviado ao repositório antes de um novo deploy. Não cole o Dockerfile na opção “Dockerfile sem Git”, pois os comandos `COPY` precisam dos arquivos do repositório.
+
+Na aplicação conectada ao repositório Git, configure:
+
+1. **Build Pack:** `Dockerfile` (em vez de Railpack).
+2. **Branch:** a branch que receber o novo commit; **Base Directory:** `/`; **Dockerfile Location:** `Dockerfile` na raiz.
+3. **Ports Exposes:** `3000`, a porta interna do Nginx. O domínio pode usar HTTPS normalmente pelo proxy do Coolify.
+4. Salve e faça um novo deploy somente depois de confirmar que o commit escolhido contém os três arquivos de implantação.
+
+No log do novo deploy, devem aparecer as etapas `FROM node:22-bookworm-slim` e `FROM nginx:stable-alpine`. Se ainda aparecer “Building docker image with Railpack”, o Build Pack não foi alterado. Se o build passar mas o domínio falhar, confira a porta interna `3000`, os logs do contêiner e o healthcheck.
 
 ## Conteúdo pendente
 

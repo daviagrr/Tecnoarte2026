@@ -72,7 +72,7 @@ export function ColorExperience() {
   useEffect(() => {
     if (!root.current || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
     const context = gsap.context(() => {
-      gsap.fromTo('[data-color-enter]', { autoAlpha: 0, y: 24 }, { autoAlpha: 1, y: 0, duration: .65, stagger: .09, ease: 'power3.out' })
+      gsap.fromTo('[data-color-enter]', { autoAlpha: .8, y: 16 }, { autoAlpha: 1, y: 0, duration: .65, stagger: .09, ease: 'power3.out' })
       if (stage === 'play') {
         gsap.fromTo('.color-stimulus', { autoAlpha: 0, scale: .86, y: 18 }, { autoAlpha: 1, scale: 1, y: 0, duration: .55, ease: 'back.out(1.5)' })
         gsap.fromTo('.color-signal', { scaleX: 0, transformOrigin: 'left center' }, { scaleX: 1, duration: .8, ease: 'power2.out' })

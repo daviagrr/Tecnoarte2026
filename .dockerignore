@@ -1,0 +1,11 @@
+node_modules
+dist
+.output
+.tanstack
+.git
+.codex
+.agents
+.env
+.env.*
+*.log
+*.pdf
