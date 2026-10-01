@@ -4,10 +4,12 @@ import { PageShell, SectionTitle } from '../components/Layout'
 export const Route = createFileRoute('/equipe')({ component: Team })
 
 const members = [
-  'Ana Luiza Santos', 'Bruna Sette', 'Davi Guerra', 'Guilherme Avelino',
-  'Guilherme Fonseca', 'João Arthur', 'Julia Rosa', 'Maria Clara Souza',
-  'Maria Eduarda Lima', 'Maria Eduarda Moura', 'Maria Luiza Carvalho',
-  'Mariana Faraco', 'Pedro Henrique', 'Theo Martins',
+  'Ana Luiza Santos Caetano', 'Bruna Pereira Sette Cecílio', 'Davi Assis Guerra',
+  'Guilherme Avelino Duarte Seixas', 'Guilherme Fonseca Alves',
+  'João Arthur Oliveira Rocha Ferreira', 'Júlia Rosa de Carvalho Ferreira',
+  'Maria Clara Souza Murtinho', 'Maria Eduarda Moura Oliveira',
+  'Maria Eduarda Silva Lima', 'Mariana Strozake Faraco',
+  'Pedro Henrique Castilho Pereira Alves', 'Theo Frinhani Martins',
 ]
 
 function Team() {
